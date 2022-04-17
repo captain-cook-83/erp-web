@@ -39,25 +39,24 @@
                             <date-formater :value="scope.row.refreshDate" precision="month" :hideIcon="true"></date-formater>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="项目名称" :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column prop="customerName" label="客户名称" width="160" :show-overflow-tooltip="true" ></el-table-column>
+                    <el-table-column prop="name" label="项目名称" width="160" :show-overflow-tooltip="true"></el-table-column>
                 
                     <el-table-column prop="amount" label="合同总额" width="135">
                         <template slot-scope="scope">
                             <money-formater :value="scope.row.amount"></money-formater>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="occurAmount" label="发生总额" sortable="custom" width="135">
+                    <el-table-column prop="occurAmount" label="累计发生额" sortable="custom" width="135">
                         <template slot-scope="scope">
                             <money-formater :value="scope.row.occurAmount"></money-formater>
                         </template>
                     </el-table-column>
-                    <el-table-column label="实际回款率" width="90">
+                    <el-table-column prop="invoiceAmount" label="累计开票额" sortable="custom" width="135">
                         <template slot-scope="scope">
-                            <percent-formater :value="scope.row.cashAmount/scope.row.occurAmount"></percent-formater>
+                            <money-formater :value="scope.row.invoiceAmount"></money-formater>
                         </template>
-                    </el-table-column>
-                    <el-table-column prop="invoiceAmount" label="开票总额" sortable="custom" width="135">
-                        <template slot-scope="scope">
+                        <!-- <template slot-scope="scope">
                             <el-popover
                                 placement="top-start"
                                 title="未开票金额"
@@ -66,15 +65,18 @@
                                 :content="(scope.row.occurAmount-scope.row.invoiceAmount).toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })">
                                 <money-formater slot="reference" :value="scope.row.invoiceAmount"></money-formater>
                             </el-popover>
-                        </template>
+                        </template> -->
                     </el-table-column>
                     <el-table-column label="开票回款率" width="90">
                         <template slot-scope="scope">
                             <percent-formater :value="scope.row.cashAmount/scope.row.invoiceAmount"></percent-formater>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="cashAmount" label="回款总额" sortable="custom" width="135">
+                    <el-table-column prop="cashAmount" label="累计回款额" sortable="custom" width="135">
                         <template slot-scope="scope">
+                            <money-formater :value="scope.row.cashAmount"></money-formater>
+                        </template>
+                        <!-- <template slot-scope="scope">
                             <el-popover
                                 placement="top-start"
                                 title="已开票未回款金额"
@@ -83,9 +85,16 @@
                                 :content="(scope.row.invoiceAmount-scope.row.cashAmount).toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })">
                                 <money-formater slot="reference" :value="scope.row.cashAmount"></money-formater>
                             </el-popover>
+                        </template> -->
+                    </el-table-column>
+                    <el-table-column label="实际回款率" width="90">
+                        <template slot-scope="scope">
+                            <percent-formater :value="scope.row.cashAmount/scope.row.occurAmount"></percent-formater>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="customerName" label="客户名称" width="160" :show-overflow-tooltip="true" ></el-table-column>
+                    <el-table-column prop="missingInvoice" label="未开票金额" width="135"/>
+                    <el-table-column prop="missingInvoiceAmount" label="已开票应收" width="135"/>
+                    <el-table-column prop="missingAmount" label="实际应收总额" width="135"/>
                     <template slot="append" v-if="hasMoreData">
                         <div class="load-more">
                             <el-button type="primary" :loading="loading" @click="loadProjectStatistics">加载更多</el-button>
@@ -120,7 +129,7 @@
                         </el-row>
                         <div class="line"></div>
                     </div>
-                    <resource-selector resourceURL="/contractItems" :filters="contractMonthlyFilters" height="63vh" :border="true" :hidePaging="true"
+                    <resource-selector resourceURL="/contractItems" :filters="contractMonthlyFilters" height="63vh" :border="true" :hidePaging="true" :defaultPageSize="500"
                         :tableColumes="contractMonthlyColumes" :dataProcessor="onContractMonthlyData" @loading="onBillsLoading" ref="billsTable"/>
                 </template>
                 <div slot="footer" class="dialog-footer">
@@ -289,6 +298,14 @@ export default {
                 
                 this.hasMoreData = data.hasMore;
                 this.$nextTick(() => {
+                    data.content.forEach(element => {
+                        let missingInvoice = element.occurAmount-element.invoiceAmount;
+                        let missingInvoiceAmount = element.invoiceAmount-element.cashAmount;
+                        element.missingInvoice = missingInvoice.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' });
+                        element.missingInvoiceAmount = missingInvoiceAmount.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' });
+                        element.missingAmount = (missingInvoice + missingInvoiceAmount).toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' });
+                    });
+
                     this.tableData.push.apply(this.tableData, data.content);
                 });
 

@@ -44,7 +44,8 @@ export default {
         border: Boolean,
         hidePaging: Boolean,
         dataProcessor: Function,
-        searchable: Boolean
+        searchable: Boolean,
+        defaultPageSize: Number
     },
     computed: {
         tableHelght () {
@@ -56,7 +57,7 @@ export default {
             tableData: [],
             totalSize: 0,
             paging: {
-                pageSize: 20,
+                pageSize: this.defaultPageSize || 20,
                 pageNumber: 1,
                 fetchTotal: true
             },
@@ -87,7 +88,7 @@ export default {
             this.tableData.splice(0);
             this.totalSize = 0;
             this.paging = {
-                pageSize: 20,
+                pageSize: this.defaultPageSize,
                 pageNumber: 1,
                 fetchTotal: true
             };
