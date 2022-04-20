@@ -87,11 +87,8 @@ export default {
         reload: function () {
             this.tableData.splice(0);
             this.totalSize = 0;
-            this.paging = {
-                pageSize: this.defaultPageSize,
-                pageNumber: 1,
-                fetchTotal: true
-            };
+            this.paging.pageNumber = 1;
+            this.paging.fetchTotal = true;
             this.loadData();
         },
         loadData: function () {
