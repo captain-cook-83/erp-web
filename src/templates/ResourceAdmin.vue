@@ -102,7 +102,7 @@ export default {
         dialogWidth: String,
         dialogTop: String,
         statusCtlFiled: String,
-        ignoreRefreshAfterEdit: Boolean
+        fefreshAfterEdit: Boolean
     },
     data () {
         return {
@@ -237,6 +237,10 @@ export default {
                         this.$refs.table.toggleRowSelection(model, true);
                         break;
                     }
+                }
+
+                if (this.fefreshAfterEdit) {
+                    this.$nextTick(this.loadData);
                 }
                         
                 this.$notify({

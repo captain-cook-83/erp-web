@@ -501,7 +501,7 @@ const contractAdminProps = {
         { prop: 'status', label: '状态', width: '60', type: 'Status' }
     ],
     statusCtlFiled: 'status',
-    ignoreRefreshAfterEdit: true,
+    fefreshAfterEdit: true,
     statusRoute: {
         '0': {
             tips: '正在编辑',
