@@ -101,7 +101,8 @@ export default {
         statusRoute: Object,
         dialogWidth: String,
         dialogTop: String,
-        statusCtlFiled: String
+        statusCtlFiled: String,
+        ignoreRefreshAfterEdit: Boolean
     },
     data () {
         return {
@@ -228,7 +229,10 @@ export default {
                 let tableData = this.tableData;
                 for (let i = 0; i < tableData.length; i++) {
                     if (tableData[i].id == model.id) {                                  //TODO 进行 loadData 更加安全
-                        if (typeof model.status === 'number') model.status = 0;         // 将状态设置为 NEW 
+                        // if (typeof model.status === 'number' && !ignoreRefreshAfterEdit) {
+                        if (typeof model.status === 'number') {
+                            model.status = 0;         // 将状态设置为 NEW 
+                        }
                         Vue.set(tableData, i, model);
                         this.$refs.table.toggleRowSelection(model, true);
                         break;

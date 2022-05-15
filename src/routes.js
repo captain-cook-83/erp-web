@@ -501,6 +501,7 @@ const contractAdminProps = {
         { prop: 'status', label: '状态', width: '60', type: 'Status' }
     ],
     statusCtlFiled: 'status',
+    ignoreRefreshAfterEdit: true,
     statusRoute: {
         '0': {
             tips: '正在编辑',
@@ -561,8 +562,14 @@ const contractAdminProps = {
             tips: '等待审核',
             icon: 'el-icon-loading',
             msg: '请认真审核核算数据，确认无误后予以确认',
-            bannerCmds: [ auditCmd ],
+            bannerCmds: [ editCmd, auditCmd ],
             cmds: [
+                {
+                    primary: true,
+                    key: 'edit',
+                    icon: 'el-icon-edit',
+                    label: '修改'
+                },
                 {
                     primary: true,
                     key: 'audit', 

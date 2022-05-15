@@ -485,6 +485,37 @@ export default {
                     message: JSON.stringify(error)
                 });
             });
+            Axios.get('/s/contract/export', {
+                responseType: 'arraybuffer',
+                headers:{'filename':'utf-8'}
+            }).then(response => {
+                let data = response.data;
+                let blob = new Blob([data], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheets'});
+                
+                if (window.navigator.msSaveOrOpenBlob) {
+                    navigator.msSaveBlob(blob, '项目情况汇总.xlsx');
+                } else {
+                    let link = document.createElement("a");
+                    let evt = document.createEvent("HTMLEvents");
+                    evt.initEvent("click", false, false);
+                    link.href = URL.createObjectURL(blob); 
+                    link.download = '合同情况汇总.xlsx';
+                    link.style.display = "none";
+                    document.body.appendChild(link);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }
+            }).catch(error => {
+                this.$notify.error({
+                    title: '下载错误',
+                    message: JSON.stringify(error)
+                });
+            });
+
+            this.$message({
+                showClose: false,
+                message: '统计进行中，请稍等片刻 ...'
+            });
         },
         projectRowClassName: function (scope) {
             if (scope.row.cashAmount / scope.row.invoiceAmount < 0.7) {
