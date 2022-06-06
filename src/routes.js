@@ -494,11 +494,15 @@ const contractAdminProps = {
         { prop: 'title', label: '标题', overflow: true },
         { prop: 'amount', label: '金额', width: '135', type: 'Amount' },
         { prop: 'serialNumber', label: '合同编号', width: '160', overflow: true },
-        { prop: 'projectName', label: '项目名称', width: '200', overflow: true },
-        { prop: 'departmentName', label: '所属部门', width: '110' },
-        { prop: 'companyName', label: '记账公司', width: '110' },
-        { prop: 'operatorName', label: '录入者', width: '80', overflow: true },
-        { prop: 'status', label: '状态', width: '60', type: 'Status' }
+        { prop: 'projectName', label: '项目名称', width: '180', overflow: true },
+        { prop: 'departmentName', label: '所属部门', width: '100' },
+        { prop: 'companyName', label: '记账公司', width: '100' },
+        { prop: 'operatorName', label: '录入者', width: '70', overflow: true },
+        { prop: 'status', label: '状态', width: '50', type: 'Status' },
+        { prop: 'finished', label: '完结', width: '70', type: 'Enum', formater: {
+            'false': '',
+            'true': '已完结'
+        }}
     ],
     statusCtlFiled: 'status',
     fefreshAfterEdit: true,

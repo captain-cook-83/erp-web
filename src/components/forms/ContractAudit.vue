@@ -44,6 +44,13 @@
                 <div v-else class="text-place-row"><span>没有历史数据</span></div>
             </el-collapse-item>
         </el-collapse>
+        <el-row :gutter="0">
+            <el-col :span="2.5"><span>完结状态：</span></el-col>
+            <el-col :span="20">
+                <span v-if="model.finished">已完结</span>
+                <el-button v-else size="mini" type="primary" @click="onFinishContract">设置为已完结</el-button>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -129,6 +136,24 @@ export default {
             if (a.createTime > b.createTime) return 1;
             else if (a.createTime < b.createTime) return -1;
             return 0;
+        },
+        onFinishContract: function () {
+            this.$confirm('确定要设置当前合同为完结状态码？', '请确认操作', {
+                confirmButtonText: '完结',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                Axios.put('/contracts/' + this.model.id + "/finished").then(response => {
+                    let contract = response.data;
+                    this.model.finished = contract.finished;
+                }).catch(error => {
+                    let status = error.response.status;
+                    this.$notify.error({
+                        title: '错误',
+                        message: '完结状态修改失败'
+                    });
+                });
+            });
         }
     }
 }
