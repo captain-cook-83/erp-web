@@ -217,7 +217,17 @@ const companyId = {
     filters: {}, 
     selectorColumes: [
         { prop: '_order', label: '序号', width: '50' },
-        { prop: 'name', label: '公司名称', width: '150', overflow: true }
+        { prop: 'name', label: '公司名称', overflow: true }
+    ]
+}
+
+const companyIdForJoin = {
+    prop: 'c.companyId', label: '记账公司', type: 'Resource', placeholder: '按记账公司筛选', resourceURL: '/companies', 
+    displayProp: 'companyName', displaySource: 'name',
+    filters: {}, 
+    selectorColumes: [
+        { prop: '_order', label: '序号', width: '50' },
+        { prop: 'name', label: '公司名称', overflow: true }
     ]
 }
 
@@ -267,7 +277,7 @@ const accountingReportProps = {
             '2': '开票',
             '3': '回款'
         } },
-        { prop: 'amount', label: '金额', width: '135', type: 'Amount' },
+        { prop: 'amount', label: '金额', width: '140', type: 'Amount' },
         { prop: 'operatorName', label: '录入者', width: '80', overflow: true },
         { prop: 'remarks', label: '备注', width: '200', overflow: true },
         { prop: 'status', label: '状态', width: '60', type: 'Status' }
@@ -477,7 +487,7 @@ const accountingAuditProps = {
     },
     dialogTitle: '月度数据审计',
     filterConditions: [
-        projectId, contractId, operatorId, createTime, accountingDate, status
+        projectId, contractId, operatorId, createTime, accountingDate, status, companyIdForJoin
     ],
     formComponent: AccountingForm,
     auditComponent: AccountingAudit
