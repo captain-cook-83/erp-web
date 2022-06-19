@@ -221,6 +221,17 @@ const companyId = {
     ]
 }
 
+const departmentIdForJoin = {
+    prop: 'c.departmentId', label: '部门', type: 'Resource', placeholder: '按部门筛选', resourceURL: '/departments', 
+    displayProp: 'departmentName', displaySource: 'name',
+    filters: {}, 
+    selectorColumes: [
+        { prop: '_order', label: '序号', width: '50' },
+        { prop: 'name', label: '部门名称', width: '150', overflow: true },
+        { prop: 'managerName', label: '负责人', overflow: true }
+    ]
+}
+
 const companyIdForJoin = {
     prop: 'c.companyId', label: '记账公司', type: 'Resource', placeholder: '按记账公司筛选', resourceURL: '/companies', 
     displayProp: 'companyName', displaySource: 'name',
@@ -487,7 +498,7 @@ const accountingAuditProps = {
     },
     dialogTitle: '月度数据审计',
     filterConditions: [
-        projectId, contractId, operatorId, createTime, accountingDate, status, companyIdForJoin
+        projectId, contractId, operatorId, createTime, accountingDate, status, companyIdForJoin, departmentIdForJoin
     ],
     formComponent: AccountingForm,
     auditComponent: AccountingAudit
